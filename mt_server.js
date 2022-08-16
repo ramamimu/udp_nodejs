@@ -1,3 +1,4 @@
+//Multicast Server sending messages
 var news = [
   "Borussia Dortmund wins German championship",
   "Tornado warning for the Bay Area",
@@ -7,22 +8,22 @@ var news = [
   "Nation's rappers down to last two samples",
 ];
 
-const udp = require("dgram");
-const Buffer = require("buffer");
-
-const group = "224.16.80.32";
-
-var server = udp.createSocket("udp4");
-server.bind();
-server.setBroadcast(true);
-server.setMulticastTTL(128);
-server.addMembership(group);
+var PORT = 1111;
+var MCAST_ADDR = "192.168.0.26"; //not your IP and should be a Class D address, see http://www.iana.org/assignments/multicast-addresses/multicast-addresses.xhtml
+var dgram = require("dgram");
+let Buffer = require("buffer");
+var server = dgram.createSocket("udp4");
+server.bind(PORT, function () {
+  server.setBroadcast(true);
+  server.setMulticastTTL(128);
+  server.addMembership(MCAST_ADDR);
+});
 
 setInterval(broadcastNew, 3000);
 
 function broadcastNew() {
-  var message = new Buffer(news[Math.floor(Math.random() * news.length)]);
-  server.send(message, 0, message.length, 8088, group);
-  console.log("Sent " + message + " to the wire...");
-  //server.close();
+  //   var message = new Buffer(news[Math.floor(Math.random() * news.length)]);
+  //   server.send(message, 0, message.length, PORT, MCAST_ADDR);
+  // console.log("Sent " + message + " to the wire...");
+  console.log("Sent to the wire...");
 }

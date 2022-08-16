@@ -1,9 +1,9 @@
-var PORT = 8088;
-var HOST = "192.168.0.26";
+//Multicast Client receiving sent messages
+var PORT = 1111;
+var MCAST_ADDR = "224.16.80.32"; //same mcast address as Server
+var HOST = "192.168.0.26"; //this is your own IP
 var dgram = require("dgram");
 var client = dgram.createSocket("udp4");
-
-const group = "224.16.80.32";
 
 client.on("listening", function () {
   var address = client.address();
@@ -12,13 +12,12 @@ client.on("listening", function () {
   );
   client.setBroadcast(true);
   client.setMulticastTTL(128);
-  client.addMembership(group);
+  client.addMembership(MCAST_ADDR);
 });
 
 client.on("message", function (message, remote) {
-  console.log("A: Epic Command Received. Preparing Relay.");
   console.log(
-    "B: From: " + remote.address + ":" + remote.port + " - " + message
+    "MCast Msg: From: " + remote.address + ":" + remote.port + " - " + message
   );
 });
 
