@@ -163,7 +163,7 @@ mtcast.on("message", function (message, remote) {
 
 // ---- LOGIC SOCKET
 
-const PORT_SOCKET = 4000;
+const PORT_SOCKET = 3131;
 
 // app.get("/", (req, res) => {
 //   res.send("<h1>Hello world</h1>");
@@ -231,7 +231,7 @@ function writeDataBufferRobotToBs() {
   // console.log("bt counter target umpan => ", byte_counter);
   byte_counter = data.writeUint32LE(1212, byte_counter); //epoch
   // console.log("bt counter epoch => ", byte_counter);
-  byte_counter = data.writeUint32LE(2121 + temp, byte_counter); //stm epoch
+  byte_counter = data.writeUint32LE(9999 + temp, byte_counter); //stm epoch
   // console.log("bt counter stm epoch => ", byte_counter);
 
   data.write(data.toString(), 0, counter, "utf8");
