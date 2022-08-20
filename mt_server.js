@@ -131,7 +131,6 @@ mtcast.on("message", function (message, remote) {
   // + " - " +
   // message
 
-  let counter = 0;
   let data = {};
   data.header = [
     String.fromCharCode(message[0]),
@@ -142,7 +141,8 @@ mtcast.on("message", function (message, remote) {
   data.pos_x = message.readInt16LE(3); //pos x
   data.pos_y = message.readInt16LE(5); //pos y
   data.theta = message.readInt16LE(7); //theta
-  data.status_bola = message.readUint8(9); //status boladata.bola_x = message.readInt16LE(10); //bola x pada lapangan
+  data.status_bola = message.readUint8(9); //status bola
+  data.bola_x = message.readInt16LE(10); // bola x pada lapangan
   data.bola_y = message.readInt16LE(12); //bola y pada lapangan
   data.mcl_x = message.readInt16LE(14); //mcl x
   data.mcl_y = message.readInt16LE(16); //mcl y
@@ -156,7 +156,18 @@ mtcast.on("message", function (message, remote) {
   data.epoch = message.readUint32LE(31); //epoch
   data.stm_epoch = message.readUint32LE(35); //stm epoch
 
+  // let counter = 39;
+  // data.obs = [];
+  // for (let i = 0; i < 144; i++) {
+  //   data.obs[i] = message.readUint16LE(counter);
+  //   counter += 2;
+  // }
+
   console.log(data);
+
+  console.log("===== TEST");
+  // console.log(message.readUint16LE(55));
+  console.log("===== BATAS TEST");
 
   io.emit("sub message", data);
 });
@@ -187,54 +198,83 @@ io.on("connection", (socket) => {
 
 // logic robot to bs
 function writeDataBufferRobotToBs() {
-  let data = Buffer.allocUnsafe(39);
+  // 288 data array of obstacle
+  let data = Buffer.allocUnsafe(39 + 288);
   let counter = 0;
   let byte_counter;
 
   byte_counter = data.write("i", 0);
-  // console.log("bt counter i => ", byte_counter);
+  console.log("bt counter i => ", byte_counter);
   byte_counter = data.write("t", 1);
-  // console.log("bt counter t => ", byte_counter);
+  console.log("bt counter t => ", byte_counter);
   const njajal = "p";
   byte_counter = data.write(njajal, 2);
-  // console.log("bt counter s => ", byte_counter);
+  console.log("bt counter s => ", byte_counter);
   byte_counter = data.writeInt16LE(100, 3); //pos x
-  // console.log("bt counter pos x => ", byte_counter);
+  console.log("bt counter pos x => ", byte_counter);
   const coba = 333;
   byte_counter = data.writeInt16LE(coba, byte_counter); //pos y
-  // console.log("bt counter pos y => ", byte_counter);
+  console.log("bt counter pos y => ", byte_counter);
   byte_counter = data.writeInt16LE(90, byte_counter); //theta
-  // console.log("bt counter theta => ", byte_counter);
+  console.log("bt counter theta => ", byte_counter);
   byte_counter = data.writeUint8(2, byte_counter); //status bola
-  // console.log("bt counter status bola => ", byte_counter);
+  console.log("bt counter status bola => ", byte_counter);
   byte_counter = data.writeInt16LE(110, byte_counter); //bola x pada lapangan
-  // console.log("bt counter bola x pada lapangan => ", byte_counter);
+  console.log("bt counter bola x pada lapangan => ", byte_counter);
   byte_counter = data.writeInt16LE(120, byte_counter); //bola y pada lapangan
-  // console.log("bt counter bola y pada lapangan => ", byte_counter);
+  console.log("bt counter bola y pada lapangan => ", byte_counter);
   byte_counter = data.writeInt16LE(160, byte_counter); //mcl x
-  // console.log("bt counter mcl x => ", byte_counter);
+  console.log("bt counter mcl x => ", byte_counter);
   byte_counter = data.writeInt16LE(170, byte_counter); //mcl y
-  // console.log("bt counter mcl y => ", byte_counter);
+  console.log("bt counter mcl y => ", byte_counter);
   byte_counter = data.writeInt16LE(180, byte_counter); //mcl theta
-  // console.log("bt counter mcl theta => ", byte_counter);
+  console.log("bt counter mcl theta => ", byte_counter);
   byte_counter = data.writeInt16LE(200, byte_counter); //robot condition
-  // console.log("bt counter robot condition => ", byte_counter);
+  console.log("bt counter robot condition => ", byte_counter);
   byte_counter = data.writeUint16LE(210, byte_counter); //status algoritma
-  // console.log("bt counter status algoritma => ", byte_counter);
+  console.log("bt counter status algoritma => ", byte_counter);
   byte_counter = data.writeUint16LE(211, byte_counter); //status sub algoritma
-  // console.log("bt counter status sub algoritma => ", byte_counter);
+  console.log("bt counter status sub algoritma => ", byte_counter);
   byte_counter = data.writeUint16LE(212, byte_counter); //status sub sub algoritma
-  // console.log("bt counter status sub sub algoritma => ", byte_counter);
+  console.log("bt counter status sub sub algoritma => ", byte_counter);
   byte_counter = data.writeUint16LE(213, byte_counter); //status sub sub sub algoritma
-  // console.log("bt counter status sub sub sub algoritma => ", byte_counter);
+  console.log("bt counter status sub sub sub algoritma => ", byte_counter);
   byte_counter = data.writeUint8(2, byte_counter); //target umpan
-  // console.log("bt counter target umpan => ", byte_counter);
+  console.log("bt counter target umpan => ", byte_counter);
   byte_counter = data.writeUint32LE(1212, byte_counter); //epoch
-  // console.log("bt counter epoch => ", byte_counter);
+  console.log("bt counter epoch => ", byte_counter);
   byte_counter = data.writeUint32LE(2121 + temp, byte_counter); //stm epoch
-  // console.log("bt counter stm epoch => ", byte_counter);
+  console.log("bt counter stm epoch => ", byte_counter);
 
-  data.write(data.toString(), 0, counter, "utf8");
+  // for (let i = 0; i < 144; i++) {
+  //   byte_counter = data.writeUint16LE(i + 5, byte_counter);
+  //   console.log(
+  //     "bt counter obs arr => ",
+  //     i + 5,
+  //     " =>> ",
+  //     byte_counter,
+  //     " || ",
+  //     i,
+  //     " res = ",
+  //     data.readUint16LE(byte_counter - 2)
+  //   );
+  // }
+  // data.
+
+  // let cobacoba = [];
+
+  // for (let i = 0; i < 144; i++) {
+  //   cobacoba.push(i);
+  // }
+  // const arrUint = new Uint16Array(cobacoba);
+
+  // data.write(arrUint);
+
+  // console.log(arrUint, " ======> ", arrUint.byteLength);
+
+  // data.write(data.toString(), 0, counter, "utf8");
+  // console.log("send: ", data.toString());
+  data.write(data.toString(), 0, byte_counter, "utf8");
 
   return data;
 }
