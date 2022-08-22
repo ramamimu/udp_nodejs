@@ -2,7 +2,7 @@
 const udp = require("dgram");
 
 let Buffer = require("buffer").Buffer;
-const PORT_UDP = "1111";
+const PORT_UDP = "5656";
 const GROUP = "224.16.32.80";
 const HOST = "0.0.0.0";
 const mtcast = udp.createSocket("udp4");
@@ -31,71 +31,84 @@ mtcast.on("message", function (message, remote) {
       " - " +
       message
   );
+});
 
-  let data = {};
-  data.header = [
-    String.fromCharCode(message[0]),
-    String.fromCharCode(message[1]),
-    String.fromCharCode(message[2]),
-  ];
-  let counter = 3;
-  // data.pos_x = message.readInt16LE(3); //pos x
-  data.pos_x = message.readInt16LE(counter); //pos x
-  counter += 2;
-  // data.pos_y = message.readInt16LE(5); //pos y
-  data.pos_y = message.readInt16LE(counter); //pos y
-  counter += 2;
-  // data.theta = message.readInt16LE(7); //theta
-  data.theta = message.readInt16LE(counter); //theta
-  counter += 1;
-  // data.status_bola = message.readUint8(9); //bola x pada lapangan
-  data.status_bola = message.readUint8(counter); //bola x pada lapangan
-  counter += 1;
-  // data.bola_x = message.readInt16LE(10); //bola y pada lapangan
-  data.bola_x = message.readInt16LE(counter); //bola y pada lapangan
-  counter += 2;
-  // data.bola_y = message.readInt16LE(12); //bola y pada lapangan
-  data.bola_y = message.readInt16LE(counter); //bola y pada lapangan
-  counter += 2;
-  // data.mcl_x = message.readInt16LE(14); //mcl x
-  data.mcl_x = message.readInt16LE(counter); //mcl x
-  counter += 2;
-  // data.mcl_y = message.readInt16LE(16); //mcl y
-  data.mcl_y = message.readInt16LE(counter); //mcl y
-  counter += 2;
-  // data.mcl_theta = message.readInt16LE(18); //mcl theta
-  data.mcl_theta = message.readInt16LE(counter); //mcl theta
-  counter += 2;
-  // data.robot_condition = message.readInt16LE(20); //robot condition
-  data.robot_condition = message.readInt16LE(counter); //robot condition
-  counter += 2;
-  // data.status_algoritma = message.readUint16LE(22); //status algoritma
-  data.status_algoritma = message.readUint16LE(counter); //status algoritma
-  counter += 2;
-  // data.status_sub_algoritma = message.readUint16LE(24); //status sub algoritma
-  data.status_sub_algoritma = message.readUint16LE(counter); //status sub algoritma
-  counter += 2;
-  // data.status_sub_sub_algoritma = message.readUint16LE(26); //status sub sub algoritma
-  data.status_sub_sub_algoritma = message.readUint16LE(counter); //status sub sub algoritma
-  counter += 2;
-  // data.status_sub_sub_sub_algoritma = message.readUint16LE(28); //status sub sub sub algoritma
-  data.status_sub_sub_sub_algoritma = message.readUint16LE(counter); //status sub sub sub algoritma
-  counter += 2;
-  // data.target_umpan = message.readUint8(30); //target umpan
-  data.target_umpan = message.readUint8(counter); //target umpan
-  counter += 1;
-  // data.epoch = message.readUint32LE(31); //epoch
-  data.epoch = message.readUint32LE(counter); //epoch
-  counter += 4;
-  // data.stm_epoch = message.readUint32LE(35); //stm epoch
-  data.stm_epoch = message.readUint32LE(counter); //stm epoch
+// receive from bs
+mtcast.on("message", function (message, remote) {
+  console.log(
+    new Date().getTime() +
+      " \nB: data From UDP group pc2Bs: " +
+      remote.address +
+      ":" +
+      remote.port +
+      " - " +
+      message
+  );
 
-  counter = 39;
-  data.obs = [];
-  for (let i = 0; i < 144; i++) {
-    data.obs[i] = message.readUint16LE(counter);
-    counter += 2;
-  }
+  // let data = {};
+  // data.header = [
+  //   String.fromCharCode(message[0]),
+  //   String.fromCharCode(message[1]),
+  //   String.fromCharCode(message[2]),
+  // ];
+  // let counter = 3;
+  // // data.pos_x = message.readInt16LE(3); //pos x
+  // data.pos_x = message.readInt16LE(counter); //pos x
+  // counter += 2;
+  // // data.pos_y = message.readInt16LE(5); //pos y
+  // data.pos_y = message.readInt16LE(counter); //pos y
+  // counter += 2;
+  // // data.theta = message.readInt16LE(7); //theta
+  // data.theta = message.readInt16LE(counter); //theta
+  // counter += 1;
+  // // data.status_bola = message.readUint8(9); //bola x pada lapangan
+  // data.status_bola = message.readUint8(counter); //bola x pada lapangan
+  // counter += 1;
+  // // data.bola_x = message.readInt16LE(10); //bola y pada lapangan
+  // data.bola_x = message.readInt16LE(counter); //bola y pada lapangan
+  // counter += 2;
+  // // data.bola_y = message.readInt16LE(12); //bola y pada lapangan
+  // data.bola_y = message.readInt16LE(counter); //bola y pada lapangan
+  // counter += 2;
+  // // data.mcl_x = message.readInt16LE(14); //mcl x
+  // data.mcl_x = message.readInt16LE(counter); //mcl x
+  // counter += 2;
+  // // data.mcl_y = message.readInt16LE(16); //mcl y
+  // data.mcl_y = message.readInt16LE(counter); //mcl y
+  // counter += 2;
+  // // data.mcl_theta = message.readInt16LE(18); //mcl theta
+  // data.mcl_theta = message.readInt16LE(counter); //mcl theta
+  // counter += 2;
+  // // data.robot_condition = message.readInt16LE(20); //robot condition
+  // data.robot_condition = message.readInt16LE(counter); //robot condition
+  // counter += 2;
+  // // data.status_algoritma = message.readUint16LE(22); //status algoritma
+  // data.status_algoritma = message.readUint16LE(counter); //status algoritma
+  // counter += 2;
+  // // data.status_sub_algoritma = message.readUint16LE(24); //status sub algoritma
+  // data.status_sub_algoritma = message.readUint16LE(counter); //status sub algoritma
+  // counter += 2;
+  // // data.status_sub_sub_algoritma = message.readUint16LE(26); //status sub sub algoritma
+  // data.status_sub_sub_algoritma = message.readUint16LE(counter); //status sub sub algoritma
+  // counter += 2;
+  // // data.status_sub_sub_sub_algoritma = message.readUint16LE(28); //status sub sub sub algoritma
+  // data.status_sub_sub_sub_algoritma = message.readUint16LE(counter); //status sub sub sub algoritma
+  // counter += 2;
+  // // data.target_umpan = message.readUint8(30); //target umpan
+  // data.target_umpan = message.readUint8(counter); //target umpan
+  // counter += 1;
+  // // data.epoch = message.readUint32LE(31); //epoch
+  // data.epoch = message.readUint32LE(counter); //epoch
+  // counter += 4;
+  // // data.stm_epoch = message.readUint32LE(35); //stm epoch
+  // data.stm_epoch = message.readUint32LE(counter); //stm epoch
+
+  // counter = 39;
+  // data.obs = [];
+  // for (let i = 0; i < 144; i++) {
+  //   data.obs[i] = message.readUint16LE(counter);
+  //   counter += 2;
+  // }
 
   // console.log(data);
 });
@@ -169,6 +182,7 @@ function writeDataBufferRobotToBs() {
 
 setInterval(() => {
   let data = writeDataBufferRobotToBs();
+  // let data = "something weird";
   mtcast.send(data, 0, data.length, PORT_UDP, GROUP, function (err) {
     if (err) console.log(err);
     console.log(
