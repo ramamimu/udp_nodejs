@@ -23,16 +23,19 @@ mtcast.bind(PORT_UDP, HOST, () => {});
 
 // logic robot to bs
 function writeDataBufferRobotToBs() {
-  let data = Buffer.allocUnsafe(32);
+  let data = Buffer.allocUnsafe(34);
 
-  let byte_counter;
-
-  byte_counter = data.write("i", 0);
-  byte_counter = data.write("t", 1);
+  data.write("i", 0);
+  data.write("t", 1);
   const njajal = "s";
-  byte_counter = data.write(njajal, 2);
-  byte_counter = data.writeUint8(1, byte_counter); // bs 0, r1 1 dst...
-  byte_counter = data.writeBigInt64LE(BigInt(32452), byte_counter); // epoch sender n getter
+  data.write(njajal, 2);
+  let byte_counter = 3;
+  byte_counter = data.writeUint8(3, byte_counter); // bs 0, r1 1 dst...
+
+  byte_counter = data.writeBigInt64LE(
+    BigInt(Math.floor(new Date().getTime() / 1000)),
+    byte_counter
+  ); // epoch sender n getter
   byte_counter = data.writeInt16LE(123, byte_counter); //pos x
   byte_counter = data.writeInt16LE(1232, byte_counter); //pos y
   byte_counter = data.writeInt16LE(1232, byte_counter); //theta
@@ -47,17 +50,17 @@ function writeDataBufferRobotToBs() {
   byte_counter = data.writeUint16LE(212, byte_counter); //status sub*** algoritma
   console.log("byte counter => ", byte_counter);
 
-  return { data, byte_counter };
+  return data;
 }
 
 setInterval(() => {
   let data = writeDataBufferRobotToBs();
   // let data = "something weird";
-  console.log("the length data ", data.byte_counter);
-  mtcast.send(data.data, 0, data.byte_counter, PORT_UDP, GROUP, function (err) {
+  // console.log("the length data ", data.byte_counter);
+  mtcast.send(data, 0, data.length, PORT_UDP, GROUP, function (err) {
     if (err) console.log(err);
     console.log(
       "\n" + new Date().getTime() + "\nA: Message pcToBs to UDP group sent"
     );
   });
-}, 25);
+}, 100);
