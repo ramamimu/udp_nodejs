@@ -29,8 +29,8 @@ function writeDataBufferRobotToBs() {
   data.write("t", 1);
   const njajal = "s";
   data.write(njajal, 2);
-  let byte_counter = 3;
-  byte_counter = data.writeUint8(3, byte_counter); // bs 0, r1 1 dst...
+  data.write("1", 3); // bs 0, r1 1 dst...
+  let byte_counter = 4;
 
   byte_counter = data.writeBigInt64LE(
     BigInt(Math.floor(new Date().getTime() / 1000)),
@@ -39,7 +39,7 @@ function writeDataBufferRobotToBs() {
   byte_counter = data.writeInt16LE(123, byte_counter); //pos x
   byte_counter = data.writeInt16LE(1232, byte_counter); //pos y
   byte_counter = data.writeInt16LE(1232, byte_counter); //theta
-  byte_counter = data.writeUint8(3, byte_counter); //status bola
+  byte_counter = data.writeUint8(1, byte_counter); //status bola
   byte_counter = data.writeInt16LE(123, byte_counter); //bola x pada lapangan
   byte_counter = data.writeInt16LE(3142, byte_counter); //bola y pada lapangan
   byte_counter = data.writeInt16LE(1234, byte_counter); //robot condition
