@@ -19,6 +19,7 @@ mtcast.bind(PORT_UDP, HOST, () => {
 });
 
 mtcast.on("message", function (message, remote) {
+  console.log("melbu");
   let rx_data = {};
 
   let byte_counter = 0;
@@ -28,51 +29,55 @@ mtcast.on("message", function (message, remote) {
     String.fromCharCode(message[2]),
   ];
   byte_counter = 4;
-  // buffer_data.write("0", 3);
-  // buffer_data.write(String.fromCharCode(BS2PC_DATA.header), 4);
   rx_data.header = String.fromCharCode(message[byte_counter]);
   byte_counter += 1;
-  // int8 command 1-2
+  // command 1
   rx_data.command = message.readInt8(byte_counter);
   byte_counter += 1;
-  // int8 style 2-3
+  // style 1
   rx_data.style = message.readInt8(byte_counter);
   byte_counter += 1;
-  // int16 bola_x_pada_lapangan 9-11
+  // bola_x_pada_lapangan 2
   rx_data.bola_x_pada_lapangan = message.readInt16LE(byte_counter);
   byte_counter += 2;
-  // int16 bola_y_pada_lapangan 9-11
+  // bola_y_pada_lapangan 2
   rx_data.bola_y_pada_lapangan = message.readInt16LE(byte_counter);
   byte_counter += 2;
-  // int8 auto_kalibrasi 24-25
+  // auto_kalibrasi 1
   rx_data.auto_kalibrasi = message.readInt8(byte_counter);
   byte_counter += 1;
-  // int8 geometry_msgs/Pose2D offset_x 28-29
-  rx_data.odometry_offset_robot = {};
-  rx_data.odometry_offset_robot.x = message.readInt16LE(byte_counter);
-  byte_counter += 2;
-  // Int16LE geometry_msgs/Pose2D offset_y 29-30
-  rx_data.odometry_offset_robot.y = message.readInt16LE(byte_counter);
-  byte_counter += 2;
-  // Int16LE geometry_msgs/Pose2D offset_theta 30-31
-  rx_data.odometry_offset_robot.theta = message.readInt16LE(byte_counter);
-  byte_counter += 2;
 
   rx_data.target_manual = {};
-  // int8 geometry_msgs/Pose2D target_manual x 35-36
+  // target_manual x 2
   rx_data.target_manual.x = message.readInt16LE(byte_counter);
   byte_counter += 2;
-  // Int16LE geometry_msgs/Pose2D target_manual y 37-38
+  // target_manual y 2
   rx_data.target_manual.y = message.readInt16LE(byte_counter);
   byte_counter += 2;
-  // Int16LE geometry_msgs/Pose2D target_manual theta 38-39
+  // target_manual theta 2
   rx_data.target_manual.theta = message.readInt16LE(byte_counter);
+  byte_counter += 2;
+
+  rx_data.odometry_offset_robot = {};
+  // offset_x 2
+  rx_data.odometry_offset_robot.x = message.readInt16LE(byte_counter);
+  byte_counter += 2;
+  // offset_y 2
+  rx_data.odometry_offset_robot.y = message.readInt16LE(byte_counter);
+  byte_counter += 2;
+  // offset_theta 2
+  rx_data.odometry_offset_robot.theta = message.readInt16LE(byte_counter);
   byte_counter += 2;
 
   rx_data.data_n_robot_mux_1 = message.readInt16LE(byte_counter);
   byte_counter += 2;
-
   rx_data.data_n_robot_mux_2 = message.readInt16LE(byte_counter);
+  byte_counter += 2;
+  rx_data.data_n_robot_mux_3 = message.readInt16LE(byte_counter);
+  byte_counter += 2;
+  rx_data.data_n_robot_mux_4 = message.readInt16LE(byte_counter);
+  byte_counter += 2;
+  rx_data.data_n_robot_mux_5 = message.readInt16LE(byte_counter);
   byte_counter += 2;
 
   rx_data.trim_kecepatan_robot1 = message.readUInt8(byte_counter);
