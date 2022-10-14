@@ -3,17 +3,17 @@
 const udp = require("dgram");
 const Robot = require("./class/robot.js");
 let Buffer = require("buffer").Buffer;
+// const PORT_UDP = "1026";
 const PORT_UDP = "5656";
 const GROUP = "224.16.32.80";
 const HOST = "0.0.0.0";
 const mtcast = udp.createSocket("udp4");
-console.log(Robot);
 const ROBOT = [
-  new Robot(1, 110, 180, 11, 0, 11, 191, 2, 5, 111, 1111, 111, 1111),
-  new Robot(2, 220, 222, 21, 2, 22, 222, 3, 5, 222, 2221, 222, 2221),
-  new Robot(3, 333, 333, 31, 0, 330, 333, 4, 7, 333, 3331, 333, 3331),
-  new Robot(4, 444, 444, 41, 0, 41, 444, 5, 8, 444, 4441, 444, 4441),
-  new Robot(5, 555, 555, 51, 0, 51, 555, 6, 9, 555, 5551, 555, 5551),
+  new Robot(1, 110, 180, 11, 1, 11, 191, 2, 5, 111, 1111, 111, 1111),
+  new Robot(2, 220, 100, 101, 0, 22, 222, 3, 5, 222, 2221, 222, 2221),
+  new Robot(3, 333, 333, 31, 1, 900, 333, 4, 7, 333, 3331, 333, 3331),
+  new Robot(4, 444, 444, 41, 1, 701, 744, 5, 8, 444, 4441, 444, 4441),
+  new Robot(5, 555, 555, 51, 1, 5001, 555, 6, 9, 555, 5551, 555, 5551),
 ];
 
 mtcast.on("listening", function () {
@@ -71,7 +71,11 @@ function writeDataBufferRobotToBs(index_robot) {
 setInterval(() => {
   const robot_len = ROBOT.length;
   for (let i = 0; i < ROBOT.length; i++) {
+    // if (i == 0) continue;
     // if (i == 1) continue;
+    // if (i == 2) continue;
+    // if (i == 3) continue;
+    // if (i == 4) continue;
     let data = writeDataBufferRobotToBs(i);
     // let data = "something weird";
     // console.log("the length data ", data.byte_counter);

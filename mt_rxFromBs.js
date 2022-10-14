@@ -28,8 +28,12 @@ mtcast.on("message", function (message, remote) {
     String.fromCharCode(message[1]),
     String.fromCharCode(message[2]),
   ];
-  byte_counter = 4;
+  byte_counter = 3;
+
   rx_data.header = String.fromCharCode(message[byte_counter]);
+  byte_counter += 1;
+  // header manual dan calibration
+  rx_data.header_manual_n_calibration = message.readInt8(byte_counter);
   byte_counter += 1;
   // command 1
   rx_data.command = message.readInt8(byte_counter);
@@ -43,9 +47,6 @@ mtcast.on("message", function (message, remote) {
   // bola_y_pada_lapangan 2
   rx_data.bola_y_pada_lapangan = message.readInt16LE(byte_counter);
   byte_counter += 2;
-  // auto_kalibrasi 1
-  rx_data.auto_kalibrasi = message.readInt8(byte_counter);
-  byte_counter += 1;
 
   rx_data.target_manual = {};
   // target_manual x 2
@@ -74,10 +75,6 @@ mtcast.on("message", function (message, remote) {
   rx_data.data_n_robot_mux_2 = message.readInt16LE(byte_counter);
   byte_counter += 2;
   rx_data.data_n_robot_mux_3 = message.readInt16LE(byte_counter);
-  byte_counter += 2;
-  rx_data.data_n_robot_mux_4 = message.readInt16LE(byte_counter);
-  byte_counter += 2;
-  rx_data.data_n_robot_mux_5 = message.readInt16LE(byte_counter);
   byte_counter += 2;
 
   rx_data.trim_kecepatan_robot1 = message.readUInt8(byte_counter);
