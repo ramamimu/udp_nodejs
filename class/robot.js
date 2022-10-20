@@ -12,6 +12,8 @@ class Robot {
   status_sub_algoritma = 9999;
   status_sub_sub_algoritma = 9999;
   status_sub_sub_sub_algoritma = 9999;
+  obs_x = [9999, 9999, 9999, 9999, 9999];
+  obs_y = [9999, 9999, 9999, 9999, 9999];
 
   constructor(
     epoch,
@@ -26,7 +28,9 @@ class Robot {
     status_algoritma,
     status_sub_algoritma,
     status_sub_sub_algoritma,
-    status_sub_sub_sub_algoritma
+    status_sub_sub_sub_algoritma,
+    obs_x,
+    obs_y
   ) {
     this.epoch = epoch;
     this.pos_x = pos_x;
@@ -41,6 +45,8 @@ class Robot {
     this.status_sub_algoritma = status_sub_algoritma;
     this.status_sub_sub_algoritma = status_sub_sub_algoritma;
     this.status_sub_sub_sub_algoritma = status_sub_sub_sub_algoritma;
+    this.obs_x = [...obs_x];
+    this.obs_y = [...obs_y];
   }
 }
 

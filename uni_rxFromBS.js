@@ -1,6 +1,8 @@
 const dgram = require("node:dgram");
 const server = dgram.createSocket("udp4");
-const ip = "192.168.242.24";
+const ip = "172.16.0.27";
+const port = 6061;
+const port_rx = 5667;
 
 server.on("error", (err) => {
   console.log(`server error:\n${err.stack}`);
@@ -17,20 +19,10 @@ server.on("listening", () => {
   console.log(`server listening ${address.address}:${address.port}`);
 });
 
-// server.connect(5666, "0.0.0.0", (err) => {
-//   //   server.send(message, (err) => {
-//   // server.close();
-//   //   });
-//   server.on("message", (msg) => {
-//     console.log(msg);
-//   });
-// });
-
 // setInterval(() => {
-//   server.send(`hello ${new Date().getTime()}`, 5666);
+//   server.send(`hello ${new Date().getTime()}`, port_rx, ip);
 // }, 50);
 
-server.bind(5666, (msg) => {
+server.bind(port_rx, (msg) => {
   console.log(msg);
 });
-// Prints: server listening 0.0.0.0:41234
