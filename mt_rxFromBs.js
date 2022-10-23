@@ -2,7 +2,7 @@
 const udp = require("dgram");
 
 let Buffer = require("buffer").Buffer;
-const PORT_UDP = "5666";
+const PORT_UDP = "1026";
 const GROUP = "224.16.32.80";
 const HOST = "0.0.0.0";
 const mtcast = udp.createSocket("udp4");
@@ -19,9 +19,9 @@ mtcast.bind(PORT_UDP, HOST, () => {
 });
 
 mtcast.on("message", function (message, remote) {
-  console.log("melbu");
+  console.log(`msg: ${message}`);
   let rx_data = {};
-
+  // if (String.fromCharCode(message[3]) == "0") {
   let byte_counter = 0;
   rx_data.headers = [
     String.fromCharCode(message[0]),
@@ -29,7 +29,6 @@ mtcast.on("message", function (message, remote) {
     String.fromCharCode(message[2]),
   ];
   byte_counter = 3;
-
   rx_data.header = String.fromCharCode(message[byte_counter]);
   byte_counter += 1;
   // header manual dan calibration
@@ -46,81 +45,6 @@ mtcast.on("message", function (message, remote) {
   byte_counter += 2;
   // bola_y_pada_lapangan 2
   rx_data.bola_y_pada_lapangan = message.readInt16LE(byte_counter);
-  byte_counter += 2;
-
-  rx_data.target_manual = {};
-  // target_manual x 2
-  rx_data.target_manual.x = message.readInt16LE(byte_counter);
-  byte_counter += 2;
-  // target_manual y 2
-  rx_data.target_manual.y = message.readInt16LE(byte_counter);
-  byte_counter += 2;
-  // target_manual theta 2
-  rx_data.target_manual.theta = message.readInt16LE(byte_counter);
-  byte_counter += 2;
-
-  rx_data.odometry_offset_robot = {};
-  // offset_x 2
-  rx_data.odometry_offset_robot.x = message.readInt16LE(byte_counter);
-  byte_counter += 2;
-  // offset_y 2
-  rx_data.odometry_offset_robot.y = message.readInt16LE(byte_counter);
-  byte_counter += 2;
-  // offset_theta 2
-  rx_data.odometry_offset_robot.theta = message.readInt16LE(byte_counter);
-  byte_counter += 2;
-
-  rx_data.data_n_robot_mux_1 = message.readInt16LE(byte_counter);
-  byte_counter += 2;
-  rx_data.data_n_robot_mux_2 = message.readInt16LE(byte_counter);
-  byte_counter += 2;
-  rx_data.data_n_robot_mux_3 = message.readInt16LE(byte_counter);
-  byte_counter += 2;
-
-  rx_data.trim_kecepatan_robot1 = message.readUInt8(byte_counter);
-  byte_counter += 1;
-
-  rx_data.trim_kecepatan_robot2 = message.readUInt8(byte_counter);
-  byte_counter += 1;
-
-  rx_data.trim_kecepatan_robot3 = message.readUInt8(byte_counter);
-  byte_counter += 1;
-
-  rx_data.trim_kecepatan_robot4 = message.readUInt8(byte_counter);
-  byte_counter += 1;
-
-  rx_data.trim_kecepatan_robot5 = message.readUInt8(byte_counter);
-  byte_counter += 1;
-
-  rx_data.trim_kecepatan_sudut_robot1 = message.readUInt8(byte_counter);
-  byte_counter += 1;
-
-  rx_data.trim_kecepatan_sudut_robot2 = message.readUInt8(byte_counter);
-  byte_counter += 1;
-
-  rx_data.trim_kecepatan_sudut_robot3 = message.readUInt8(byte_counter);
-  byte_counter += 1;
-
-  rx_data.trim_kecepatan_sudut_robot4 = message.readUInt8(byte_counter);
-  byte_counter += 1;
-
-  rx_data.trim_kecepatan_sudut_robot5 = message.readUInt8(byte_counter);
-  byte_counter += 1;
-
-  rx_data.trim_penendang_robot1 = message.readUInt8(byte_counter);
-  byte_counter += 1;
-
-  rx_data.trim_penendang_robot2 = message.readUInt8(byte_counter);
-  byte_counter += 1;
-
-  rx_data.trim_penendang_robot3 = message.readUInt8(byte_counter);
-  byte_counter += 1;
-
-  rx_data.trim_penendang_robot4 = message.readUInt8(byte_counter);
-  byte_counter += 1;
-
-  rx_data.trim_penendang_robot5 = message.readUInt8(byte_counter);
-  byte_counter += 1;
-
   console.log("receive = ", rx_data, byte_counter);
+  // }
 });
