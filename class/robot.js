@@ -6,8 +6,52 @@ class Robot {
   status_bola = 0;
   bola_x = 9999;
   bola_y = 9999;
+<<<<<<< HEAD
 
   constructor(epoch, pos_x, pos_y, theta, status_bola, bola_x, bola_y) {
+=======
+  robot_condition = 9999;
+  target_umpan = 0;
+  status_algoritma = 9999;
+  status_sub_algoritma = 9999;
+  status_sub_sub_algoritma = 9999;
+  status_sub_sub_sub_algoritma = 9999;
+  obs_x = [9999, 9999, 9999, 9999, 9999];
+  obs_y = [9999, 9999, 9999, 9999, 9999];
+  obs_length = 10;
+  obs = [
+    [9999, 9999],
+    [9999, 9999],
+    [9999, 9999],
+    [9999, 9999],
+    [9999, 9999],
+    [9999, 9999],
+    [9999, 9999],
+    [9999, 9999],
+    [9999, 9999],
+    [9999, 9999],
+  ]
+
+  constructor(
+    epoch,
+    pos_x,
+    pos_y,
+    theta,
+    status_bola,
+    bola_x,
+    bola_y,
+    robot_condition,
+    target_umpan,
+    status_algoritma,
+    status_sub_algoritma,
+    status_sub_sub_algoritma,
+    status_sub_sub_sub_algoritma,
+    obs_x,
+    obs_y,
+    obs_length,
+    obs
+  ) {
+>>>>>>> 1ece32ddaeb6f73a4d881f187ddcbbb527203a97
     this.epoch = epoch;
     this.pos_x = pos_x;
     this.pos_y = pos_y;
@@ -15,6 +59,19 @@ class Robot {
     this.status_bola = status_bola;
     this.bola_x = bola_x;
     this.bola_y = bola_y;
+<<<<<<< HEAD
+=======
+    this.robot_condition = robot_condition;
+    this.target_umpan = target_umpan;
+    this.status_algoritma = status_algoritma;
+    this.status_sub_algoritma = status_sub_algoritma;
+    this.status_sub_sub_algoritma = status_sub_sub_algoritma;
+    this.status_sub_sub_sub_algoritma = status_sub_sub_sub_algoritma;
+    this.obs_x = [...obs_x];
+    this.obs_y = [...obs_y];
+    this.obs_length = obs_length;
+    this.obs = [...obs];
+>>>>>>> 1ece32ddaeb6f73a4d881f187ddcbbb527203a97
   }
 }
 
