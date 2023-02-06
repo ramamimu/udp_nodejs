@@ -2,7 +2,7 @@
 const udp = require("dgram");
 
 let Buffer = require("buffer").Buffer;
-const PORT_UDP = "5666";
+const PORT_UDP = "1026";
 const GROUP = "224.16.32.80";
 const HOST = "0.0.0.0";
 const mtcast = udp.createSocket("udp4");

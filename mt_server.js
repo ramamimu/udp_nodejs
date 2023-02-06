@@ -25,14 +25,27 @@ const ROBOT = [
     111,
     1111,
     [100, 240, 123, 223, 900],
-    [10, 24, 223, 900, 223]
+    [10, 24, 223, 900, 223],
+    10,
+    [
+      [10, 45],
+      [30, 45],
+      [60, 60],
+      [10, 90],
+      [67, 20],
+      [64, 70],
+      [46, 63],
+      [90, 46],
+      [64, 68],
+      [78, 60],
+    ]
   ),
   new Robot(
     2,
     220,
     100,
     101,
-    0,
+    1,
     22,
     222,
     3,
@@ -42,7 +55,20 @@ const ROBOT = [
     222,
     2221,
     [90, 240, 203, 950, 203],
-    [300, 440, 223, 253, 910]
+    [300, 440, 223, 253, 910],
+    10,
+    [
+      [10, 45],
+      [30, 45],
+      [60, 60],
+      [10, 90],
+      [67, 20],
+      [64, 70],
+      [46, 63],
+      [90, 46],
+      [64, 68],
+      [78, 60],
+    ]
   ),
   new Robot(
     3,
@@ -50,8 +76,8 @@ const ROBOT = [
     333,
     31,
     1,
-    900,
-    333,
+    500,
+    233,
     4,
     7,
     333,
@@ -59,7 +85,20 @@ const ROBOT = [
     333,
     3331,
     [20, 120, 133, 320, 10],
-    [300, 450, 212, 275, 190]
+    [300, 450, 212, 275, 190],
+    10,
+    [
+      [10, 45],
+      [30, 45],
+      [60, 60],
+      [10, 90],
+      [67, 20],
+      [64, 70],
+      [46, 63],
+      [90, 46],
+      [64, 68],
+      [78, 60],
+    ]
   ),
   new Robot(
     4,
@@ -76,7 +115,20 @@ const ROBOT = [
     444,
     4441,
     [202, 10, 313, 70, 80],
-    [230, 120, 872, 295, 60]
+    [230, 120, 872, 295, 60],
+    10,
+    [
+      [10, 45],
+      [30, 45],
+      [60, 60],
+      [10, 90],
+      [67, 20],
+      [64, 70],
+      [46, 63],
+      [90, 46],
+      [64, 68],
+      [78, 60],
+    ]
   ),
   new Robot(
     5,
@@ -93,7 +145,20 @@ const ROBOT = [
     555,
     5551,
     [52, 754, 123, 856, 213],
-    [239, 64, 754, 442, 53]
+    [239, 64, 754, 442, 53],
+    10,
+    [
+      [10, 45],
+      [30, 45],
+      [60, 60],
+      [10, 90],
+      [67, 20],
+      [64, 70],
+      [46, 63],
+      [90, 46],
+      [64, 68],
+      [78, 60],
+    ]
   ),
 ];
 
@@ -113,7 +178,8 @@ mtcast.bind(PORT_SOCKET, HOST, () => {});
 
 // logic robot to bs
 function writeDataBufferRobotToBs(index_robot) {
-  let data = Buffer.allocUnsafe(46);
+  // let data = Buffer.allocUnsafe(46);
+  let data = Buffer.allocUnsafe(87);
   const Robot = ROBOT[index_robot];
 
   data.write("i", 0);
@@ -134,7 +200,7 @@ function writeDataBufferRobotToBs(index_robot) {
   byte_counter = data.writeInt16LE(Robot.bola_y, byte_counter); //bola y pada lapangan
   byte_counter = data.writeInt16LE(Robot.robot_condition, byte_counter); //robot condition
   byte_counter = data.writeUint8(Robot.target_umpan, byte_counter); //target umpan
-
+  
   // obs x
   for (let i = 0; i < 5; i++) {
     byte_counter = data.writeInt16LE(Robot.obs_x[i], byte_counter);
@@ -143,6 +209,14 @@ function writeDataBufferRobotToBs(index_robot) {
   // obs y
   for (let i = 0; i < 5; i++) {
     byte_counter = data.writeInt16LE(Robot.obs_y[i], byte_counter);
+  }
+  
+  byte_counter = data.writeUint8(Robot.obs_length, byte_counter); //obs length
+  
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 2; j++) {
+      byte_counter = data.writeInt16LE(Robot.obs[i][j], byte_counter);
+    }
   }
 
   console.log("byte counter => ", byte_counter);
@@ -154,10 +228,10 @@ setInterval(() => {
   const robot_len = ROBOT.length;
   for (let i = 0; i < ROBOT.length; i++) {
     if (i == 0) continue;
-    // if (i == 1) continue;
+    if (i == 1) continue;
     // if (i == 2) continue;
-    // if (i == 3) continue;
-    // if (i == 4) continue;
+    if (i == 3) continue;
+    if (i == 4) continue;
     let data = writeDataBufferRobotToBs(i);
     // let data = "something weird";
     // console.log("the length data ", data.byte_counter);
