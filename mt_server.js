@@ -6,7 +6,7 @@ let Buffer = require("buffer").Buffer;
 // const PORT_UDP = "1026";
 const PORT_UDP = "1026";
 const PORT_SOCKET = "6666";
-const GROUP = "224.16.32.80";
+const GROUP = "224.16.32.83";
 const HOST = "0.0.0.0";
 const mtcast = udp.createSocket("udp4");
 const ROBOT = [
@@ -38,7 +38,8 @@ const ROBOT = [
       [90, 46],
       [64, 68],
       [78, 60],
-    ]
+    ],
+    50
   ),
   new Robot(
     2,
@@ -68,7 +69,8 @@ const ROBOT = [
       [90, 46],
       [64, 68],
       [78, 60],
-    ]
+    ],
+    60
   ),
   new Robot(
     3,
@@ -98,7 +100,8 @@ const ROBOT = [
       [90, 46],
       [64, 68],
       [78, 60],
-    ]
+    ],
+    70
   ),
   new Robot(
     4,
@@ -128,7 +131,8 @@ const ROBOT = [
       [90, 46],
       [64, 68],
       [78, 60],
-    ]
+    ],
+    80
   ),
   new Robot(
     5,
@@ -158,7 +162,8 @@ const ROBOT = [
       [90, 46],
       [64, 68],
       [78, 60],
-    ]
+    ],
+    90
   ),
 ];
 
@@ -178,8 +183,8 @@ mtcast.bind(PORT_SOCKET, HOST, () => {});
 
 // logic robot to bs
 function writeDataBufferRobotToBs(index_robot) {
-  // let data = Buffer.allocUnsafe(46);
-  let data = Buffer.allocUnsafe(87);
+  let data = Buffer.allocUnsafe(88);
+  // let data = Buffer.allocUnsafe(8);
   const Robot = ROBOT[index_robot];
 
   data.write("i", 0);
@@ -200,16 +205,7 @@ function writeDataBufferRobotToBs(index_robot) {
   byte_counter = data.writeInt16LE(Robot.bola_y, byte_counter); //bola y pada lapangan
   byte_counter = data.writeInt16LE(Robot.robot_condition, byte_counter); //robot condition
   byte_counter = data.writeUint8(Robot.target_umpan, byte_counter); //target umpan
-
-  // obs x
-  for (let i = 0; i < 5; i++) {
-    byte_counter = data.writeInt16LE(Robot.obs_x[i], byte_counter);
-  }
-
-  // obs y
-  for (let i = 0; i < 5; i++) {
-    byte_counter = data.writeInt16LE(Robot.obs_y[i], byte_counter);
-  }
+  byte_counter = data.writeUint8(Robot.index_point, byte_counter); //index point
 
   byte_counter = data.writeUint8(Robot.obs_length, byte_counter); //obs length
 
@@ -219,8 +215,6 @@ function writeDataBufferRobotToBs(index_robot) {
     }
   }
 
-  console.log("byte counter => ", byte_counter);
-
   return data;
 }
 
@@ -228,10 +222,10 @@ setInterval(() => {
   const robot_len = ROBOT.length;
   for (let i = 0; i < ROBOT.length; i++) {
     if (i == 0) continue;
-    if (i == 1) continue;
+    // if (i == 1) continue;
     // if (i == 2) continue;
-    if (i == 3) continue;
-    if (i == 4) continue;
+    // if (i == 3) continue;
+    // if (i == 4) continue;
     let data = writeDataBufferRobotToBs(i);
     // let data = "something weird";
     // console.log("the length data ", data.byte_counter);

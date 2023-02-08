@@ -6,10 +6,6 @@ class Robot {
   status_bola = 0;
   bola_x = 9999;
   bola_y = 9999;
-<<<<<<< HEAD
-
-  constructor(epoch, pos_x, pos_y, theta, status_bola, bola_x, bola_y) {
-=======
   robot_condition = 9999;
   target_umpan = 0;
   status_algoritma = 9999;
@@ -30,7 +26,8 @@ class Robot {
     [9999, 9999],
     [9999, 9999],
     [9999, 9999],
-  ]
+  ];
+  index_point = 9999;
 
   constructor(
     epoch,
@@ -49,9 +46,9 @@ class Robot {
     obs_x,
     obs_y,
     obs_length,
-    obs
+    obs,
+    index_point
   ) {
->>>>>>> 1ece32ddaeb6f73a4d881f187ddcbbb527203a97
     this.epoch = epoch;
     this.pos_x = pos_x;
     this.pos_y = pos_y;
@@ -59,8 +56,6 @@ class Robot {
     this.status_bola = status_bola;
     this.bola_x = bola_x;
     this.bola_y = bola_y;
-<<<<<<< HEAD
-=======
     this.robot_condition = robot_condition;
     this.target_umpan = target_umpan;
     this.status_algoritma = status_algoritma;
@@ -71,7 +66,7 @@ class Robot {
     this.obs_y = [...obs_y];
     this.obs_length = obs_length;
     this.obs = [...obs];
->>>>>>> 1ece32ddaeb6f73a4d881f187ddcbbb527203a97
+    this.index_point = index_point;
   }
 }
 
