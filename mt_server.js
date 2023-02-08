@@ -222,13 +222,11 @@ setInterval(() => {
   const robot_len = ROBOT.length;
   for (let i = 0; i < ROBOT.length; i++) {
     if (i == 0) continue;
-    // if (i == 1) continue;
-    // if (i == 2) continue;
-    // if (i == 3) continue;
+    if (i == 1) continue;
+    if (i == 2) continue;
+    if (i == 3) continue;
     // if (i == 4) continue;
     let data = writeDataBufferRobotToBs(i);
-    // let data = "something weird";
-    // console.log("the length data ", data.byte_counter);
     mtcast.send(data, 0, data.length, PORT_UDP, GROUP, function (err) {
       if (err) console.log(err);
       console.log(
