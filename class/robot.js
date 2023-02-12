@@ -28,6 +28,7 @@ class Robot {
     [9999, 9999],
   ];
   index_point = 9999;
+  battery_health = 0;
 
   constructor(
     epoch,
@@ -47,7 +48,8 @@ class Robot {
     obs_y,
     obs_length,
     obs,
-    index_point
+    index_point,
+    battery_health
   ) {
     this.epoch = epoch;
     this.pos_x = pos_x;
@@ -67,6 +69,7 @@ class Robot {
     this.obs_length = obs_length;
     this.obs = [...obs];
     this.index_point = index_point;
+    this.battery_health = battery_health;
   }
 }
 

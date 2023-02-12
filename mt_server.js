@@ -6,7 +6,7 @@ let Buffer = require("buffer").Buffer;
 // const PORT_UDP = "1026";
 const PORT_UDP = "1026";
 const PORT_SOCKET = "6666";
-const GROUP = "224.16.32.83";
+const GROUP = "224.16.32.80";
 const HOST = "0.0.0.0";
 const mtcast = udp.createSocket("udp4");
 const ROBOT = [
@@ -39,7 +39,8 @@ const ROBOT = [
       [64, 68],
       [78, 60],
     ],
-    50
+    50,
+    35
   ),
   new Robot(
     2,
@@ -70,7 +71,8 @@ const ROBOT = [
       [64, 68],
       [78, 60],
     ],
-    60
+    60,
+    34
   ),
   new Robot(
     3,
@@ -101,7 +103,8 @@ const ROBOT = [
       [64, 68],
       [78, 60],
     ],
-    70
+    70,
+    33.4
   ),
   new Robot(
     4,
@@ -132,7 +135,8 @@ const ROBOT = [
       [64, 68],
       [78, 60],
     ],
-    80
+    80,
+    31.9
   ),
   new Robot(
     5,
@@ -163,7 +167,8 @@ const ROBOT = [
       [64, 68],
       [78, 60],
     ],
-    90
+    90,
+    23
   ),
 ];
 
@@ -183,8 +188,7 @@ mtcast.bind(PORT_SOCKET, HOST, () => {});
 
 // logic robot to bs
 function writeDataBufferRobotToBs(index_robot) {
-  let data = Buffer.allocUnsafe(88);
-  // let data = Buffer.allocUnsafe(8);
+  let data = Buffer.allocUnsafe(92);
   const Robot = ROBOT[index_robot];
 
   data.write("i", 0);
@@ -206,7 +210,6 @@ function writeDataBufferRobotToBs(index_robot) {
   byte_counter = data.writeInt16LE(Robot.robot_condition, byte_counter); //robot condition
   byte_counter = data.writeUint8(Robot.target_umpan, byte_counter); //target umpan
   byte_counter = data.writeUint8(Robot.index_point, byte_counter); //index point
-
   byte_counter = data.writeUint8(Robot.obs_length, byte_counter); //obs length
 
   for (let i = 0; i < 10; i++) {
@@ -215,23 +218,22 @@ function writeDataBufferRobotToBs(index_robot) {
     }
   }
 
+  byte_counter = data.writeFloatLE(Robot.battery_health, byte_counter);
   return data;
 }
 
 setInterval(() => {
   const robot_len = ROBOT.length;
   for (let i = 0; i < ROBOT.length; i++) {
-    if (i == 0) continue;
-    if (i == 1) continue;
-    if (i == 2) continue;
-    if (i == 3) continue;
+    // if (i == 0) continue;
+    // if (i == 1) continue;
+    // if (i == 2) continue;
+    // if (i == 3) continue;
     // if (i == 4) continue;
     let data = writeDataBufferRobotToBs(i);
     mtcast.send(data, 0, data.length, PORT_UDP, GROUP, function (err) {
       if (err) console.log(err);
-      console.log(
-        "\n" + new Date().getTime() + "\nA: Message pcToBs to UDP group sent"
-      );
+      console.log("\n" + new Date().getTime() + "\nA: Message pcToBs to UDP group sent");
     });
   }
 }, 100);
