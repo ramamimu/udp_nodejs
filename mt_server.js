@@ -188,7 +188,9 @@ mtcast.bind(PORT_SOCKET, HOST, () => {});
 
 // logic robot to bs
 function writeDataBufferRobotToBs(index_robot) {
+  // let data = Buffer.allocUnsafe(102);
   let data = Buffer.allocUnsafe(92);
+  // let data = Buffer.allocUnsafe(72);
   const Robot = ROBOT[index_robot];
 
   data.write("i", 0);
@@ -219,17 +221,26 @@ function writeDataBufferRobotToBs(index_robot) {
   }
 
   byte_counter = data.writeFloatLE(Robot.battery_health, byte_counter);
+
+  byte_counter = data.writeInt16LE(10, byte_counter);
+  byte_counter = data.writeInt16LE(10, byte_counter);
+  byte_counter = data.writeInt16LE(10, byte_counter);
+
+  byte_counter = data.writeInt16LE(10, byte_counter);
+  byte_counter = data.writeInt16LE(10, byte_counter);
+
+  console.log(byte_counter, Robot);
   return data;
 }
 
 setInterval(() => {
   const robot_len = ROBOT.length;
   for (let i = 0; i < ROBOT.length; i++) {
-    // if (i == 0) continue;
-    // if (i == 1) continue;
-    // if (i == 2) continue;
+    if (i == 0) continue;
+    if (i == 1) continue;
+    if (i == 2) continue;
     // if (i == 3) continue;
-    // if (i == 4) continue;
+    if (i == 4) continue;
     let data = writeDataBufferRobotToBs(i);
     mtcast.send(data, 0, data.length, PORT_UDP, GROUP, function (err) {
       if (err) console.log(err);
