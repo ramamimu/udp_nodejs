@@ -29,6 +29,7 @@ class Robot {
   ];
   index_point = 9999;
   battery_health = 0;
+  v = 10;
 
   constructor(
     epoch,
@@ -70,6 +71,51 @@ class Robot {
     this.obs = [...obs];
     this.index_point = index_point;
     this.battery_health = battery_health;
+  }
+
+  setV(v) {
+    this.v = v;
+  }
+
+  setPos(x, y, theta) {
+    this.pos_x = x;
+    this.pos_y = y;
+    this.theta = theta;
+  }
+
+  goTo(x, y, theta) {
+    let dx = x - this.pos_x;
+    let dy = y - this.pos_y;
+
+    let d = Math.sqrt(dx * dx + dy * dy);
+    let vx, vy, v_theta;
+    if (this.pos_x > x) {
+      vx = -this.v;
+    } else if (this.pos_x < x) {
+      vx = this.v;
+    } else {
+      vx = 0;
+    }
+
+    if (this.pos_y > y) {
+      vy = -this.v;
+    } else if (this.pos_y < y) {
+      vy = this.v;
+    } else {
+      vy = 0;
+    }
+
+    if (this.theta > theta) {
+      v_theta = -this.v;
+    } else if (this.theta < theta) {
+      v_theta = this.v;
+    } else {
+      v_theta = 0;
+    }
+
+    this.pos_x += vx;
+    this.pos_y += vy;
+    this.theta += v_theta * 0.3;
   }
 }
 

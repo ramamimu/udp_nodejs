@@ -6,6 +6,7 @@ let Buffer = require("buffer").Buffer;
 // const PORT_UDP = "1026";
 const PORT_UDP = "1026";
 const PORT_SOCKET = "6666";
+const PORT_RCV = 9292;
 const GROUP = "224.16.32.80";
 const HOST = "0.0.0.0";
 const mtcast = udp.createSocket("udp4");
@@ -186,6 +187,58 @@ setInterval(() => {
 
 mtcast.bind(PORT_SOCKET, HOST, () => {});
 
+mtcast.on("message", (msg, rinfo) => {
+  rcvMsg(msg);
+});
+
+function rcvMsg(msg) {
+  const THAT = this;
+  if (String.fromCharCode(msg[3]) == "0") {
+    const TheMsg = {
+      manualX: msg.readInt16LE(11),
+      manualY: msg.readInt16LE(13),
+      manualTheta: msg.readInt16LE(15),
+      offsetX: msg.readInt16LE(17),
+      offsetY: msg.readInt16LE(19),
+      offsetTheta: msg.readInt16LE(21),
+      velo: [
+        msg.readUint8(29),
+        msg.readUint8(30),
+        msg.readUint8(31),
+        msg.readUint8(32),
+        msg.readUint8(33),
+      ],
+    };
+
+    const len_robot = ROBOT.length;
+    console.log(TheMsg.velo);
+    for (let i = 0; i < len_robot; i++) {
+      ROBOT[i].setV(TheMsg.velo[i] / 25);
+    }
+
+    if (TheMsg.offsetX != 0 || TheMsg.offsetX != 0 || TheMsg.offsetX != 0) {
+      const index = TheMsg.offsetX % 10;
+      console.log("offset robot ", index);
+      ROBOT[Math.abs(parseInt(index)) - 1].setPos(
+        TheMsg.offsetX / 10,
+        TheMsg.offsetY / 10,
+        TheMsg.offsetTheta / 10
+      );
+    }
+
+    if (TheMsg.manualX != 0 || TheMsg.manualX != 0 || TheMsg.manualX != 0) {
+      const index = TheMsg.manualX % 10;
+      console.log("manual robot ", index);
+      if (index == 0) return;
+      ROBOT[Math.abs(parseInt(index)) - 1].goTo(
+        TheMsg.manualX / 10,
+        TheMsg.manualY / 10,
+        TheMsg.manualTheta / 10
+      );
+    }
+  }
+}
+
 // logic robot to bs
 function writeDataBufferRobotToBs(index_robot) {
   // let data = Buffer.allocUnsafe(102);
@@ -229,7 +282,6 @@ function writeDataBufferRobotToBs(index_robot) {
   byte_counter = data.writeInt16LE(10, byte_counter);
   byte_counter = data.writeInt16LE(10, byte_counter);
 
-  console.log(byte_counter, Robot);
   return data;
 }
 
@@ -237,14 +289,18 @@ setInterval(() => {
   const robot_len = ROBOT.length;
   for (let i = 0; i < ROBOT.length; i++) {
     if (i == 0) continue;
-    if (i == 1) continue;
-    if (i == 2) continue;
+    // if (i == 1) continue;
+    // if (i == 2) continue;
     // if (i == 3) continue;
     if (i == 4) continue;
-    let data = writeDataBufferRobotToBs(i);
-    mtcast.send(data, 0, data.length, PORT_UDP, GROUP, function (err) {
-      if (err) console.log(err);
-      console.log("\n" + new Date().getTime() + "\nA: Message pcToBs to UDP group sent");
-    });
+    try {
+      let data = writeDataBufferRobotToBs(i);
+      mtcast.send(data, 0, data.length, PORT_UDP, GROUP, function (err) {
+        if (err) console.log(err);
+        // console.log("\n" + new Date().getTime() + "\nA: Message pcToBs to UDP group sent");
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
-}, 100);
+}, 25);
