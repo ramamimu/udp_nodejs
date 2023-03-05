@@ -26,18 +26,22 @@ const ROBOT = [
     1111,
     [100, 240, 123, 223, 900],
     [10, 24, 223, 900, 223],
-    10,
+    14,
     [
-      [10, 45],
-      [30, 45],
-      [60, 60],
-      [10, 90],
-      [67, 20],
-      [64, 70],
-      [46, 63],
-      [90, 46],
-      [64, 68],
-      [78, 60],
+      [100, 1],
+      [120, 1],
+      [120, 1],
+      [110, 1],
+      [115, 1],
+      [108, 1],
+      [46, 6],
+      [90, 6],
+      [64, 6],
+      [78, 7],
+      [40, 5],
+      [54, 2],
+      [87, 1],
+      [63, 1],
     ],
     50,
     35
@@ -58,18 +62,22 @@ const ROBOT = [
     2221,
     [90, 240, 203, 950, 203],
     [300, 440, 223, 253, 910],
-    10,
+    14,
     [
-      [10, 45],
-      [30, 45],
-      [60, 60],
-      [10, 90],
-      [67, 20],
-      [64, 70],
-      [46, 63],
-      [90, 46],
-      [64, 68],
-      [78, 60],
+      [100, 1],
+      [120, 1],
+      [120, 1],
+      [110, 1],
+      [115, 1],
+      [108, 1],
+      [46, 6],
+      [90, 6],
+      [64, 6],
+      [78, 7],
+      [40, 5],
+      [54, 2],
+      [87, 1],
+      [63, 1],
     ],
     60,
     34
@@ -90,18 +98,22 @@ const ROBOT = [
     3331,
     [20, 120, 133, 320, 10],
     [300, 450, 212, 275, 190],
-    10,
+    14,
     [
-      [10, 45],
-      [30, 45],
-      [60, 60],
-      [10, 90],
-      [67, 20],
-      [64, 70],
-      [46, 63],
-      [90, 46],
-      [64, 68],
-      [78, 60],
+      [100, 1],
+      [120, 1],
+      [120, 1],
+      [110, 1],
+      [115, 1],
+      [108, 1],
+      [46, 6],
+      [90, 6],
+      [64, 6],
+      [78, 7],
+      [40, 5],
+      [54, 2],
+      [87, 1],
+      [63, 1],
     ],
     70,
     33.4
@@ -122,18 +134,22 @@ const ROBOT = [
     4441,
     [202, 10, 313, 70, 80],
     [230, 120, 872, 295, 60],
-    10,
+    14,
     [
-      [10, 45],
-      [30, 45],
-      [60, 60],
-      [10, 90],
-      [67, 20],
-      [64, 70],
-      [46, 63],
-      [90, 46],
-      [64, 68],
-      [78, 60],
+      [10, 1],
+      [30, 2],
+      [60, 2],
+      [10, 1],
+      [67, 1],
+      [64, 2],
+      [46, 1],
+      [90, 2],
+      [64, 1],
+      [78, 2],
+      [60, 1],
+      [89, 1],
+      [90, 2],
+      [66, 1],
     ],
     80,
     31.9
@@ -154,18 +170,22 @@ const ROBOT = [
     5551,
     [52, 754, 123, 856, 213],
     [239, 64, 754, 442, 53],
-    10,
+    14,
     [
-      [10, 45],
-      [30, 45],
-      [60, 60],
-      [10, 90],
-      [67, 20],
-      [64, 70],
-      [46, 63],
-      [90, 46],
-      [64, 68],
-      [78, 60],
+      [100, 1],
+      [120, 1],
+      [120, 1],
+      [110, 1],
+      [115, 1],
+      [108, 1],
+      [46, 6],
+      [90, 6],
+      [64, 6],
+      [78, 7],
+      [40, 5],
+      [54, 2],
+      [87, 1],
+      [63, 1],
     ],
     90,
     23
@@ -184,12 +204,12 @@ setInterval(() => {
   temp++;
 }, 20);
 
-mtcast.bind(PORT_SOCKET, HOST, () => {});
+mtcast.bind(PORT_SOCKET, HOST, () => { });
 
 // logic robot to bs
 function writeDataBufferRobotToBs(index_robot) {
   // let data = Buffer.allocUnsafe(102);
-  let data = Buffer.allocUnsafe(92);
+  let data = Buffer.allocUnsafe(86);
   // let data = Buffer.allocUnsafe(72);
   const Robot = ROBOT[index_robot];
 
@@ -214,10 +234,11 @@ function writeDataBufferRobotToBs(index_robot) {
   byte_counter = data.writeUint8(Robot.index_point, byte_counter); //index point
   byte_counter = data.writeUint8(Robot.obs_length, byte_counter); //obs length
 
-  for (let i = 0; i < 10; i++) {
-    for (let j = 0; j < 2; j++) {
-      byte_counter = data.writeInt16LE(Robot.obs[i][j], byte_counter);
-    }
+  for (let i = 0; i < 14; i++) {
+    // for (let j = 0; j < 2; j++) {
+    byte_counter = data.writeInt16LE(Robot.obs[i][0], byte_counter);
+    byte_counter = data.writeUint8(Robot.obs[i][1], byte_counter);
+    // }
   }
 
   byte_counter = data.writeFloatLE(Robot.battery_health, byte_counter);
@@ -229,18 +250,19 @@ function writeDataBufferRobotToBs(index_robot) {
   byte_counter = data.writeInt16LE(10, byte_counter);
   byte_counter = data.writeInt16LE(10, byte_counter);
 
-  console.log(byte_counter, Robot);
+  // console.log(byte_counter, Robot);
   return data;
 }
 
 setInterval(() => {
   const robot_len = ROBOT.length;
   for (let i = 0; i < ROBOT.length; i++) {
-    if (i == 0) continue;
-    if (i == 1) continue;
-    if (i == 2) continue;
+    // if (i == 0) continue;
+    // if (i == 1) continue;
+    // if (i == 2) continue;
     // if (i == 3) continue;
-    if (i == 4) continue;
+    // if (i == 4) continue;
+    console.log(i);
     let data = writeDataBufferRobotToBs(i);
     mtcast.send(data, 0, data.length, PORT_UDP, GROUP, function (err) {
       if (err) console.log(err);
