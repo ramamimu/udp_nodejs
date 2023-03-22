@@ -6,18 +6,18 @@ let Buffer = require("buffer").Buffer;
 // const PORT_UDP = "1026";
 const PORT_UDP = "1026";
 const PORT_SOCKET = "6666";
-const GROUP = "224.16.32.80";
+const GROUP = "224.16.32.83";
 const HOST = "0.0.0.0";
 const mtcast = udp.createSocket("udp4");
 const ROBOT = [
   new Robot(
     1,
-    110,
+    100,
     180,
     11,
     1,
-    11,
-    191,
+    400,
+    900,
     2,
     5,
     111,
@@ -48,8 +48,8 @@ const ROBOT = [
   ),
   new Robot(
     2,
-    220,
-    100,
+    10,
+    10,
     101,
     1,
     22,
@@ -136,20 +136,20 @@ const ROBOT = [
     [230, 120, 872, 295, 60],
     14,
     [
-      [10, 1],
-      [30, 2],
-      [60, 2],
-      [10, 1],
-      [67, 1],
-      [64, 2],
-      [46, 1],
-      [90, 2],
-      [64, 1],
-      [78, 2],
-      [60, 1],
-      [89, 1],
-      [90, 2],
-      [66, 1],
+      [100, 140],
+      [100, 141],
+      [100, 142],
+      [100, 143],
+      [100, 0],
+      [100, 1],
+      [100, 2],
+      [100, 3],
+      [100, 4],
+      [100, 5],
+      [100, 90],
+      [100, 91],
+      [100, 92],
+      [100, 93],
     ],
     80,
     31.9
@@ -160,7 +160,7 @@ const ROBOT = [
     555,
     51,
     1,
-    5001,
+    500,
     555,
     6,
     9,
@@ -172,18 +172,18 @@ const ROBOT = [
     [239, 64, 754, 442, 53],
     14,
     [
-      [100, 1],
-      [120, 1],
-      [120, 1],
-      [110, 1],
+      [100, 140],
+      [120, 142],
+      [120, 143],
+      [110, 0],
       [115, 1],
-      [108, 1],
-      [46, 6],
-      [90, 6],
-      [64, 6],
-      [78, 7],
-      [40, 5],
-      [54, 2],
+      [108, 2],
+      [46, 3],
+      [90, 4],
+      [64, 5],
+      [78, 6],
+      [40, 7],
+      [54,],
       [87, 1],
       [63, 1],
     ],
@@ -201,6 +201,10 @@ mtcast.on("listening", function () {
 let temp = 0;
 
 setInterval(() => {
+  for (let i = 0; i < 5; i++) {
+    const Robot = ROBOT[i];
+    Robot.pos_y = (Robot.pos_y + 1) % 1500;
+  }
   temp++;
 }, 20);
 
@@ -257,11 +261,11 @@ function writeDataBufferRobotToBs(index_robot) {
 setInterval(() => {
   const robot_len = ROBOT.length;
   for (let i = 0; i < ROBOT.length; i++) {
-    // if (i == 0) continue;
-    // if (i == 1) continue;
-    // if (i == 2) continue;
+    if (i == 0) continue;
+    if (i == 1) continue;
+    if (i == 2) continue;
     // if (i == 3) continue;
-    // if (i == 4) continue;
+    if (i == 4) continue;
     console.log(i);
     let data = writeDataBufferRobotToBs(i);
     mtcast.send(data, 0, data.length, PORT_UDP, GROUP, function (err) {
@@ -269,4 +273,4 @@ setInterval(() => {
       console.log("\n" + new Date().getTime() + "\nA: Message pcToBs to UDP group sent");
     });
   }
-}, 100);
+}, 10);

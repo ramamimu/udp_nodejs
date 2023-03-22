@@ -1,9 +1,10 @@
 // ----- UDP SERVER MULTICAST
+const { count } = require("console");
 const udp = require("dgram");
 
 let Buffer = require("buffer").Buffer;
 const PORT_UDP = "1026";
-const GROUP = "224.16.32.80";
+const GROUP = "224.16.32.83";
 const HOST = "0.0.0.0";
 const mtcast = udp.createSocket("udp4");
 
@@ -45,6 +46,56 @@ mtcast.on("message", function (message, remote) {
   byte_counter += 2;
   // bola_y_pada_lapangan 2
   rx_data.bola_y_pada_lapangan = message.readInt16LE(byte_counter);
+  byte_counter += 2;
+
+  rx_data.target_manual_x = message.readInt16LE(byte_counter);
+  byte_counter += 2;
+
+  rx_data.target_manual_y = message.readInt16LE(byte_counter);
+  byte_counter += 2;
+
+  rx_data.target_manual_theta = message.readInt16LE(byte_counter);
+  byte_counter += 2;
+
+  rx_data.offset_robot_x = message.readInt16LE(byte_counter);
+  byte_counter += 2;
+
+  rx_data.offset_robot_y = message.readInt16LE(byte_counter);
+  byte_counter += 2;
+
+  rx_data.offset_robot_theta = message.readInt16LE(byte_counter);
+  byte_counter += 2;
+
+  rx_data.mux1 = message.readInt16LE(byte_counter);
+  byte_counter += 2;
+
+  rx_data.mux2 = message.readInt16LE(byte_counter);
+  byte_counter += 2;
+
+  rx_data.mux_bs_control = message.readInt16LE(byte_counter);
+  byte_counter += 2;
+
+  rx_data.control_v_linear = [];
+  for (let i = 0; i < 5; i++) {
+    rx_data.control_v_linear[i] = message.readInt8(byte_counter);
+    byte_counter += 1;
+  }
+
+  rx_data.control_v_angular = [];
+  for (let i = 0; i < 5; i++) {
+    rx_data.control_v_angular[i] = message.readInt8(byte_counter);
+    byte_counter += 1;
+  }
+
+  rx_data.control_power_kicker = [];
+  for (let i = 0; i < 5; i++) {
+    rx_data.control_power_kicker[i] = message.readInt8(byte_counter);
+    byte_counter += 1;
+  }
+
+  rx_data.passing_counter = message.readInt8(byte_counter);
+  byte_counter += 1;
+
   console.log("receive = ", rx_data, byte_counter);
   // }
 });
