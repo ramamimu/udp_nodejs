@@ -4,9 +4,9 @@ const udp = require("dgram");
 const Robot = require("./class/robot.js");
 let Buffer = require("buffer").Buffer;
 // const PORT_UDP = "1026";
-const PORT_UDP = "1026";
-const PORT_SOCKET = "6666";
-const GROUP = "224.16.32.83";
+const PORT_UDP = "3333";
+const PORT_SOCKET = "9192";
+const GROUP = "224.16.32.69";
 const HOST = "0.0.0.0";
 const mtcast = udp.createSocket("udp4");
 const ROBOT = [
@@ -18,7 +18,7 @@ const ROBOT = [
     1,
     400,
     900,
-    2,
+    15,
     5,
     111,
     1111,
@@ -26,6 +26,7 @@ const ROBOT = [
     1111,
     [100, 240, 123, 223, 900],
     [10, 24, 223, 900, 223],
+    50,
     14,
     [
       [100, 1],
@@ -43,8 +44,32 @@ const ROBOT = [
       [87, 1],
       [63, 1],
     ],
-    50,
-    35
+    35,
+    0,
+    240,
+    100,
+    120,
+    350,
+    673,
+    200,
+    200,
+    14,
+    [
+      [100, 140],
+      [500, 200],
+      [300, 100],
+      [-110, 1000],
+      [-115, 300],
+      [200, 102],
+      [46, 233],
+      [-90, 210],
+      [100, -500],
+      [200, -100],
+      [-40, 456],
+      [540, 355],
+      [100, 112],
+      [110, 211],
+    ],
   ),
   new Robot(
     2,
@@ -62,6 +87,7 @@ const ROBOT = [
     2221,
     [90, 240, 203, 950, 203],
     [300, 440, 223, 253, 910],
+    60,
     14,
     [
       [100, 1],
@@ -79,8 +105,32 @@ const ROBOT = [
       [87, 1],
       [63, 1],
     ],
-    60,
-    34
+    34,
+    1000,
+    500,
+    100,
+    120,
+    350,
+    673,
+    300,
+    300,
+    14,
+    [
+      [100, 140],
+      [500, 200],
+      [300, 100],
+      [-110, 1000],
+      [-115, 300],
+      [200, 102],
+      [46, 233],
+      [-90, 210],
+      [100, -500],
+      [200, -100],
+      [-40, 456],
+      [540, 355],
+      [100, 112],
+      [110, 211],
+    ],
   ),
   new Robot(
     3,
@@ -98,6 +148,7 @@ const ROBOT = [
     3331,
     [20, 120, 133, 320, 10],
     [300, 450, 212, 275, 190],
+    70,
     14,
     [
       [100, 1],
@@ -115,8 +166,32 @@ const ROBOT = [
       [87, 1],
       [63, 1],
     ],
-    70,
-    33.4
+    33.4,
+    780,
+    1100,
+    100,
+    120,
+    350,
+    673,
+    400,
+    400,
+    14,
+    [
+      [100, 140],
+      [500, 200],
+      [300, 100],
+      [-110, 1000],
+      [-115, 300],
+      [200, 102],
+      [46, 233],
+      [-90, 210],
+      [100, -500],
+      [200, -100],
+      [-40, 456],
+      [540, 355],
+      [100, 112],
+      [110, 211],
+    ],
   ),
   new Robot(
     4,
@@ -134,6 +209,7 @@ const ROBOT = [
     4441,
     [202, 10, 313, 70, 80],
     [230, 120, 872, 295, 60],
+    80,
     14,
     [
       [100, 140],
@@ -151,8 +227,32 @@ const ROBOT = [
       [100, 92],
       [100, 93],
     ],
-    80,
-    31.9
+    31.9,
+    800,
+    1089,
+    100,
+    120,
+    350,
+    673,
+    500,
+    500,
+    14,
+    [
+      [100, 140],
+      [500, 200],
+      [300, 100],
+      [-110, 1000],
+      [-115, 300],
+      [200, 102],
+      [46, 233],
+      [-90, 210],
+      [100, -500],
+      [200, -100],
+      [-40, 456],
+      [540, 355],
+      [100, 112],
+      [110, 211],
+    ],
   ),
   new Robot(
     5,
@@ -170,6 +270,7 @@ const ROBOT = [
     5551,
     [52, 754, 123, 856, 213],
     [239, 64, 754, 442, 53],
+    90,
     14,
     [
       [100, 140],
@@ -183,37 +284,62 @@ const ROBOT = [
       [64, 5],
       [78, 6],
       [40, 7],
-      [54,],
+      [54, 3],
       [87, 1],
       [63, 1],
     ],
-    90,
-    23
+    23,
+    500,
+    900,
+    100,
+    120,
+    350,
+    673,
+    600,
+    600,
+    14,
+    [
+      [100, 140],
+      [500, 200],
+      [300, 100],
+      [-110, 1000],
+      [-115, 300],
+      [200, 102],
+      [46, 233],
+      [-90, 210],
+      [100, -500],
+      [200, -100],
+      [-40, 456],
+      [540, 355],
+      [100, 112],
+      [110, 211],
+    ],
   ),
 ];
 
 mtcast.on("listening", function () {
   mtcast.setBroadcast(true);
-  mtcast.setMulticastTTL(64);
+  mtcast.setMulticastTTL(1);
   mtcast.addMembership(GROUP, HOST);
 });
 
 let temp = 0;
 
-setInterval(() => {
-  for (let i = 0; i < 5; i++) {
-    const Robot = ROBOT[i];
-    Robot.pos_y = (Robot.pos_y + 1) % 1500;
-  }
-  temp++;
-}, 20);
+// setInterval(() => {
+//   for (let i = 0; i < 5; i++) {
+//     const Robot = ROBOT[i];
+//     Robot.pos_y = (Robot.pos_y + 1) % 1500;
+//   }
+//   temp++;
+// }, 20);
 
 mtcast.bind(PORT_SOCKET, HOST, () => { });
 
 // logic robot to bs
 function writeDataBufferRobotToBs(index_robot) {
   // let data = Buffer.allocUnsafe(102);
-  let data = Buffer.allocUnsafe(86);
+  // let data = Buffer.allocUnsafe(145);
+  let data = Buffer.allocUnsafe(161);
   // let data = Buffer.allocUnsafe(72);
   const Robot = ROBOT[index_robot];
 
@@ -239,20 +365,37 @@ function writeDataBufferRobotToBs(index_robot) {
   byte_counter = data.writeUint8(Robot.obs_length, byte_counter); //obs length
 
   for (let i = 0; i < 14; i++) {
-    // for (let j = 0; j < 2; j++) {
     byte_counter = data.writeInt16LE(Robot.obs[i][0], byte_counter);
-    byte_counter = data.writeUint8(Robot.obs[i][1], byte_counter);
-    // }
+    byte_counter = data.writeInt16LE(Robot.obs[i][1], byte_counter);
   }
 
   byte_counter = data.writeFloatLE(Robot.battery_health, byte_counter);
 
-  byte_counter = data.writeInt16LE(10, byte_counter);
-  byte_counter = data.writeInt16LE(10, byte_counter);
-  byte_counter = data.writeInt16LE(10, byte_counter);
+  byte_counter = data.writeInt16LE(Robot.goalkeeper_field_x, byte_counter);
+  byte_counter = data.writeInt16LE(Robot.goalkeeper_field_y, byte_counter);
 
-  byte_counter = data.writeInt16LE(10, byte_counter);
-  byte_counter = data.writeInt16LE(10, byte_counter);
+  byte_counter = data.writeInt16LE(Robot.ball_next_x, byte_counter);
+  byte_counter = data.writeInt16LE(Robot.ball_next_y, byte_counter);
+
+  byte_counter = data.writeInt16LE(Robot.robot_next_x, byte_counter);
+  byte_counter = data.writeInt16LE(Robot.robot_next_y, byte_counter);
+
+  byte_counter = data.writeInt16LE(Robot.pass_target_x, byte_counter);
+  byte_counter = data.writeInt16LE(Robot.pass_target_y, byte_counter);
+
+  byte_counter = data.writeUint8(Robot.pos_obs_length, byte_counter); //obs length
+
+  for (let i = 0; i < 14; i++) {
+    byte_counter = data.writeInt16LE(Robot.pos_obs[i][0], byte_counter);
+    byte_counter = data.writeInt16LE(Robot.pos_obs[i][1], byte_counter);
+  }
+
+  // byte_counter = data.writeInt16LE(10, byte_counter);
+  // byte_counter = data.writeInt16LE(10, byte_counter);
+  // byte_counter = data.writeInt16LE(10, byte_counter);
+
+  // byte_counter = data.writeInt16LE(10, byte_counter);
+  // byte_counter = data.writeInt16LE(10, byte_counter);
 
   // console.log(byte_counter, Robot);
   return data;
@@ -261,11 +404,11 @@ function writeDataBufferRobotToBs(index_robot) {
 setInterval(() => {
   const robot_len = ROBOT.length;
   for (let i = 0; i < ROBOT.length; i++) {
-    if (i == 0) continue;
-    if (i == 1) continue;
-    if (i == 2) continue;
+    // if (i == 0) continue;
+    // if (i == 1) continue;
+    // if (i == 2) continue;
     // if (i == 3) continue;
-    if (i == 4) continue;
+    // if (i == 4) continue;
     console.log(i);
     let data = writeDataBufferRobotToBs(i);
     mtcast.send(data, 0, data.length, PORT_UDP, GROUP, function (err) {
@@ -273,4 +416,4 @@ setInterval(() => {
       console.log("\n" + new Date().getTime() + "\nA: Message pcToBs to UDP group sent");
     });
   }
-}, 10);
+}, 500);

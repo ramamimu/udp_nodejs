@@ -96,6 +96,12 @@ mtcast.on("message", function (message, remote) {
   rx_data.passing_counter = message.readInt8(byte_counter);
   byte_counter += 1;
 
+  rx_data.pos_obs = [];
+  for (let i = 0; i < 6; i++) {
+    rx_data.pos_obs[i] = message.readInt16LE(byte_counter);
+    byte_counter += 2;
+  }
+
   console.log("receive = ", rx_data, byte_counter);
   // }
 });

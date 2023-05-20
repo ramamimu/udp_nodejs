@@ -29,6 +29,27 @@ class Robot {
   ];
   index_point = 9999;
   battery_health = 0;
+  ball_next_x = 9999;
+  ball_next_y = 9999;
+  robot_next_x = 9999;
+  robot_next_y = 9999;
+  goalkeeper_field_x = 9999;
+  goalkeeper_field_y = 9999;
+  pass_target_x = 9999;
+  pass_target_y = 9999;
+  pos_obs_length = 10;
+  pos_obs = [
+    [9999, 9999],
+    [9999, 9999],
+    [9999, 9999],
+    [9999, 9999],
+    [9999, 9999],
+    [9999, 9999],
+    [9999, 9999],
+    [9999, 9999],
+    [9999, 9999],
+    [9999, 9999],
+  ];
 
   constructor(
     epoch,
@@ -46,10 +67,20 @@ class Robot {
     status_sub_sub_sub_algoritma,
     obs_x,
     obs_y,
+    index_point,
     obs_length,
     obs,
-    index_point,
-    battery_health
+    battery_health,
+    goalkeeper_field_x,
+    goalkeeper_field_y,
+    ball_next_x,
+    ball_next_y,
+    robot_next_x,
+    robot_next_y,
+    pass_target_x,
+    pass_target_y,
+    pos_obs_length,
+    pos_obs
   ) {
     this.epoch = epoch;
     this.pos_x = pos_x;
@@ -66,10 +97,20 @@ class Robot {
     this.status_sub_sub_sub_algoritma = status_sub_sub_sub_algoritma;
     this.obs_x = [...obs_x];
     this.obs_y = [...obs_y];
+    this.index_point = index_point;
     this.obs_length = obs_length;
     this.obs = [...obs];
-    this.index_point = index_point;
     this.battery_health = battery_health;
+    this.goalkeeper_field_x = goalkeeper_field_x;
+    this.goalkeeper_field_y = goalkeeper_field_y;
+    this.ball_next_x = ball_next_x;
+    this.ball_next_y = ball_next_y;
+    this.robot_next_x = robot_next_x;
+    this.robot_next_y = robot_next_y;
+    this.pass_target_x = pass_target_x;
+    this.pass_target_y = pass_target_y;
+    this.pos_obs_length = pos_obs_length;
+    this.pos_obs = [...pos_obs];
   }
 }
 
